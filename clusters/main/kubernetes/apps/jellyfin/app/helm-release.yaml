@@ -26,7 +26,7 @@ spec:
                 url: "${CLOUDFLARE_R2_URL}"
         ingress:
             main:
-                enabled: true
+                enabled: false
                 hosts:
                     - host: jelly.${DOMAIN_0}
                       paths:
