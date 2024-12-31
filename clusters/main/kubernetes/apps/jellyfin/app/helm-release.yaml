@@ -13,13 +13,12 @@ spec:
                 kind: HelmRepository
                 name: truecharts
                 namespace: flux-system
-    releaseName: jellyfin
     values:
         credentials:
             cloudflare-r2:
                 accessKey: "${CLOUDFLARE_R2_ACCESS}"
                 bucket: jellyfin-scale
-                encrKey: MYSECRETPASSPHRASE
+                encrKey: "${CLOUDFLARE_R2_ENCRKEY}"
                 name: cloudflare-r2
                 path: ""
                 secretKey: "${CLOUDFLARE_R2_SECRET}"
@@ -27,7 +26,7 @@ spec:
                 url: "${CLOUDFLARE_R2_URL}"
         ingress:
             main:
-                enabled: false
+                enabled: true
                 hosts:
                     - host: jelly.${DOMAIN_0}
                       paths:
@@ -35,7 +34,7 @@ spec:
                           pathType: Prefix
                 integrations:
                     certManager:
-                        certificateIssuer: domain-1-le-prod
+                        certificateIssuer: domain-0-le-prod
                         enabled: true
                     traefik:
                         enabled: true
@@ -65,7 +64,3 @@ spec:
                 mountPath: /FTKSRV/Media
         resources:
             limits:
-                cpu: 16000m
-        workload:
-            main:
-                podSpec:

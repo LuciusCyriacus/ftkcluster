@@ -13,11 +13,9 @@ spec:
                 kind: HelmRepository
                 name: truecharts
                 namespace: flux-system
-    releaseName: cloudflareddns
     values:
         cloudflareddns:
             api_token: ${CLOUDFLARE_DDNS_TOKEN}
-            detect_mode: dig-whoami.cloudflare
             host_zone_record:
                 - domain: ${DOMAIN_0}
                   record: A
@@ -26,5 +24,3 @@ spec:
             config:
                 enabled: true
                 mountPath: /config
-                readOnly: false
-                storageClass: ""
