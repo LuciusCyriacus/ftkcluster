@@ -5,6 +5,8 @@ age.agekey
 *clustertool.exe
 clustertool.exe
 clustertool
+flux.exe
+kubectl.exe
 sopssecret.yaml
 sopssecret*
 *sopssecret*
