@@ -62,5 +62,3 @@ spec:
                 path: /mnt/FTKShares/Media
                 server: 192.168.0.2
                 mountPath: /FTKSRV/Media
-        resources:
-            limits:
