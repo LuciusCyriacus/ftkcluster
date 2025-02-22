@@ -1,0 +1,98 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: qbittorrent
+      version: 20.0.11
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  postRenderers:
+  - kustomize:
+      patches:
+        - target:
+            version: v1
+            kind: Deployment
+            name: qbittorrent
+          patch: |
+            - op: add
+              path: /spec/template/spec/containers/1/resources/limits/truecharts.org~1tun
+              value: 1
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    credentials:  
+      cloudflare-r2:
+        accessKey: "${CLOUDFLARE_R2_ACCESS}"
+        bucket: qbittorrent-scale
+        encrKey: "${CLOUDFLARE_R2_ENCRKEY}"
+        name: cloudflare-r2
+        path: ""
+        secretKey: "${CLOUDFLARE_R2_SECRET}"
+        type: s3
+        url: "${CLOUDFLARE_R2_URL}"
+    qbitportforward:
+      enabled: true
+      QBT_USERNAME: "${QBT_ADMIN}"
+      QBT_PASSWORD: "${QBT_PW}"
+    addons:
+      vpn:
+        type: gluetun
+        killSwitch: true
+        excludedNetworks_IPv4:
+          - 192.168.0.0/24
+        env:
+          VPN_SERVICE_PROVIDER: "private internet access"
+          VPN_TYPE: "openvpn"
+          OPENVPN_USER: "${VPN_USER}"
+          OPENVPN_PASSWORD: "${VPN_PW}"
+          VPN_PORT_FORWARDING: true
+          PORT_FORWARD_ONLY: true
+          FIREWALL_INPUT_PORTS: 10095,8000
+    ingress:
+      main:
+        enabled: true
+        integrations:
+          traefik:
+            enabled: true
+          certManager:
+            certificateIssuer: domain-0-le-prod
+            enabled: true
+        hosts:
+          - host: qbittorrent.${DOMAIN_0}
+            paths:
+              - path: /
+                pathType: Prefix
+    persistence:
+      config:
+        volsync:
+          - credentials: cloudflare-r2
+            dest:
+              enabled: true
+            name: config
+            src:
+              enabled: true
+            type: restic
+      streaming:
+        enabled: true
+        type: nfs
+        path: /mnt/FTKStreaming/Streaming
+        mountPath: /streaming
+        server: 192.168.0.2
