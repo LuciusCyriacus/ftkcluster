@@ -6,3 +6,5 @@ resources:
   - kubernetes-dashboard/ks.yaml
   - qbittorrent/ks.yaml
   - prowlarr/ks.yaml
+  - radarr/ks.yaml
+  - sonarr/ks.yaml

@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sonarr
+  namespace: sonarr
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: sonarr
+      version: 22.2.4
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    credentials:  
+      cloudflare-r2:
+        accessKey: "${CLOUDFLARE_R2_ACCESS}"
+        bucket: sonarr-scale
+        encrKey: "${CLOUDFLARE_R2_ENCRKEY}"
+        name: cloudflare-r2
+        path: ""
+        secretKey: "${CLOUDFLARE_R2_SECRET}"
+        type: s3
+        url: "${CLOUDFLARE_R2_URL}"
+    ingress:
+      main:
+        enabled: true
+        integrations:
+          traefik:
+            enabled: true
+          certManager:
+            certificateIssuer: domain-0-le-prod
+            enabled: true
+        hosts:
+          - host: sonarr.${DOMAIN_0}
+            paths:
+              - path: /
+                pathType: Prefix
+    persistence:
+      config:
+        volsync:
+          - credentials: cloudflare-r2
+            dest:
+              enabled: true
+            name: config
+            src:
+              enabled: true
+            type: restic
+      streaming:
+        enabled: true
+        type: nfs
+        path: /mnt/FTKStreaming/Streaming
+        mountPath: /streaming
+        server: 192.168.0.2
+      torrents:
+        enabled: true
+        type: nfs
+        path: /mnt/FTKStreaming/Torrents
+        mountPath: /torrents
+        server: 192.168.0.2
