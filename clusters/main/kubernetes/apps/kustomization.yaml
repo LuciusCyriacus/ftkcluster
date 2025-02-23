@@ -5,3 +5,4 @@ resources:
   - jellyfin/ks.yaml
   - kubernetes-dashboard/ks.yaml
   - qbittorrent/ks.yaml
+  - prowlarr/ks.yaml
