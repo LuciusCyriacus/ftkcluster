@@ -67,9 +67,3 @@ spec:
         path: /mnt/FTKStreaming/Streaming
         mountPath: /streaming
         server: 192.168.0.2
-      torrents:
-        enabled: true
-        type: nfs
-        path: /mnt/FTKStreaming/Torrents
-        mountPath: /torrents
-        server: 192.168.0.2
