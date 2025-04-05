@@ -66,6 +66,18 @@ spec:
           VPN_PORT_FORWARDING: true
           PORT_FORWARD_ONLY: true
           FIREWALL_INPUT_PORTS: 10095,8000
+    configmap:
+      gluetun-auth-config:
+        enabled: true
+        data:
+          config.toml: >-
+            [[roles]]
+
+            name = "qbittorrent"
+
+            routes = ["GET /v1/vpn/status","GET /v1/publicip/ip","GET /v1/openvpn/portforwarded"]
+
+            auth = "none"
     ingress:
       main:
         enabled: true
@@ -96,3 +108,11 @@ spec:
         path: /mnt/FTKStreaming/Streaming
         mountPath: /streaming
         server: 192.168.0.2
+      gluetun-auth-config:
+        enabled: true
+        type: configmap
+        mountPath: /gluetun/auth/config.toml
+        objectName: gluetun-auth-config
+        readOnly: true
+        subPath: config.toml
+        targetSelectAll: true
