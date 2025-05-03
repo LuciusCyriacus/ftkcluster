@@ -86,6 +86,8 @@ spec:
           certManager:
             certificateIssuer: domain-0-le-prod
             enabled: true
+          traefik:
+            enabled: false
         hosts:
           - host: qbittorrent.${DOMAIN_0}
             paths:
