@@ -12,4 +12,4 @@ resources:
   - prometheus-community.yaml
   - spegel.yaml
   - truecharts.yaml
-# more goes here!
+  - metallb.yaml
