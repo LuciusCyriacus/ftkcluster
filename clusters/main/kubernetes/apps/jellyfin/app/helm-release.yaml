@@ -58,9 +58,9 @@ spec:
       media:
         enabled: true
         type: nfs
-        path: /mnt/FTKShares
+        path: /mnt/FTKShares/Media
         server: 192.168.0.2
-        mountPath: /FTKSRV
+        mountPath: /Media
     resources:
       limits:
         cpu: 16000m
