@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: longhorn.${BASE_DOMAIN}
+    - host: longhorn.${DOMAIN_0}
       http:
         paths:
           - pathType: Prefix
