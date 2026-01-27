@@ -48,6 +48,8 @@ spec:
             name: config
             src:
               enabled: true
+              trigger:
+                schedule: 30 0 * * *
             type: restic
       streaming:
         enabled: true
