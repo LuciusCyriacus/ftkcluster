@@ -50,6 +50,7 @@ spec:
               enabled: true
               trigger:
                 schedule: 30 0 * * *
+              cacheCapacity: 25Gi
             type: restic
       streaming:
         enabled: true
