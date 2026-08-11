@@ -8,10 +8,10 @@ spec:
   chart:
     spec:
       chart: cert-manager
-      version: 6.4.1
+      version: v1.20.3
       sourceRef:
         kind: HelmRepository
-        name: truecharts
+        name: jetstack
         namespace: flux-system
       interval: 5m
   install:
@@ -24,3 +24,8 @@ spec:
     remediation:
       retries: 3
   values:
+    crds:
+      enabled: true
+    dns01RecursiveNameservers: "1.1.1.1:53,1.0.0.1:53"
+    dns01RecursiveNameserversOnly: false
+    enableCertificateOwnerRef: true
