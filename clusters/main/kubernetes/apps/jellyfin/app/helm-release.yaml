@@ -77,5 +77,3 @@ spec:
               resources:
                 limits:
                   cpu: 16000m
-    autodiscovery:
-      enabled: true
