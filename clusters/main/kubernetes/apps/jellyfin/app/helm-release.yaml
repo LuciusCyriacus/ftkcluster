@@ -64,6 +64,18 @@ spec:
         path: /mnt/FTKShares/Media
         server: 192.168.0.2
         mountPath: /Media
-    resources:
-      limits:
-        cpu: 16000m
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                JELLYFIN_DATA_DIR: /data
+                JELLYFIN_CONFIG_DIR: /config
+                JELLYFIN_LOG_DIR: /logs
+                JELLYFIN_CACHE_DIR: /cache
+              resources:
+                limits:
+                  cpu: 16000m
+    autodiscovery:
+      enabled: true
